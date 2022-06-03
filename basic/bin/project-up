@@ -1,0 +1,60 @@
+#!/bin/bash
+
+doesProjectExist=false
+projectName="$1"
+
+if [ -z "$projectName" ]; then
+  echo "Project name parameter is missing! Please add project name."
+  exit 1
+fi
+
+for i in "$PROJECTS"/*; do
+  if [ "$(basename "$i")" == "$projectName" ] && [ 'temp' != "$projectName" ]; then
+    doesProjectExist=true
+  fi
+done
+
+if ! $doesProjectExist ; then
+  echo "$projectName project does not exist! Please check the project name and try again."
+  exit 1
+fi
+
+# shellcheck disable=SC2046
+docker stop $(docker ps -a -q)
+dockerStopProcessId=$!
+wait $dockerStopProcessId
+
+ssh-add
+
+cd "$PROJECTS/$projectName" || exit
+
+if [ "$(git branch --list develop)" ]; then
+  currentGitBranch=$(git symbolic-ref --short HEAD)
+  git checkout develop
+  git pull
+  echo "Develop has been updated"
+  git checkout "$currentGitBranch"
+
+  if [ "$currentGitBranch" != 'develop' ] && [ "$currentGitBranch" != 'main' ]; then
+    git rebase develop
+  fi
+fi
+
+if [ 'no-api' != "$2" ]; then
+  pidof postman
+  postmanProcessIds=$!
+  if [ ! "$postmanProcessIds" ]; then
+  nohup postman >/dev/null 2>&1 &
+  fi
+fi
+
+nohup phpstorm ~/projects/"$projectName" >/dev/null 2>&1 &
+
+#@todo check for docker errors
+docker-compose up -d
+cd "$PROJECTS/$projectName" || exit
+echo "$projectName is up and running!"
+
+google-chrome "local.$projectName.com" >/dev/null 2>&1 &
+
+$SHELL
