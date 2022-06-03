@@ -1,5 +1,9 @@
 # dotfiles
 
+This project is forked from `rafaeleyng/dotfiles`. I made a light version of it.
+
+Original:
+
 This project is heavily inspired by @holman [dotfiles](https://github.com/holman/dotfiles). I've added [`oh-my-zsh`](https://ohmyz.sh/), changed the whole structure, and simplified a lot the version management for programming languages by using [`asdf`](https://asdf-vm.com/).
 
 ## install
