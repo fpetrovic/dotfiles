@@ -3,7 +3,6 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DEFAULT_USER=$(whoami)
 
-plugins=(docker docker-compose git kubectl z)
+plugins=(git kubectl z zsh-autosuggestions zsh-syntax-highlighting zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

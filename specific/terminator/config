@@ -14,6 +14,8 @@
     foreground_color = "#ebdbb2"
     scrollback_infinite = True
     exit_action = restart
+    font = MesloLGS NF 10
+    use_system_font = False
 [layouts]
   [[default]]
     [[[child0]]]
