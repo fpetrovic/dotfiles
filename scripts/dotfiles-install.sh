@@ -1,7 +1,8 @@
 #!/bin/bash
+# set env variables, if they are not defined @todo_fp_mp
 #
 # hooks the dotfiles project to your home and shell config
-export DOTFILES="$HOME/.dotfiles"
+export DOTFILES="$HOME/projects/dotfiles"
 
 echo ''
 

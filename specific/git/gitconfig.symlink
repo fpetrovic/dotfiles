@@ -12,8 +12,8 @@
   ui = true
 [core]
   excludesfile = ~/.gitignore
-  editor = vim
-  pager = delta
+  editor = nano
+  pager = cat
 [apply]
   whitespace = nowarn
 [mergetool]
