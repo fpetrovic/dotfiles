@@ -8,11 +8,11 @@ if [ -z "$projectName" ]; then
   exit 1
 fi
 
-for i in "$PROJECTS"/*; do
-  if [ "$(basename "$i")" == "$projectName" ] && [ 'temp' != "$projectName" ]; then
-    doesProjectExist=true
-  fi
-done
+
+if [ -d "$PROJECTS"/"$projectName" ]; then
+  doesProjectExist=true
+fi
+
 
 if ! $doesProjectExist ; then
   echo "$projectName project does not exist! Please check the project name and try again."
@@ -28,33 +28,33 @@ ssh-add
 
 cd "$PROJECTS/$projectName" || exit
 
-if [ "$(git branch --list develop)" ]; then
-  currentGitBranch=$(git symbolic-ref --short HEAD)
-  git checkout develop
-  git pull
-  echo "Develop has been updated"
-  git checkout "$currentGitBranch"
+#if [ "$(git branch --list develop)" ]; then
+#  currentGitBranch=$(git symbolic-ref --short HEAD)
+#  git checkout develop
+#  git pull
+#  echo "Develop has been updated"
+#  git checkout "$currentGitBranch"
 
-  if [ "$currentGitBranch" != 'develop' ] && [ "$currentGitBranch" != 'main' ]; then
-    git rebase develop
-  fi
-fi
+#  if [ "$currentGitBranch" != 'develop' ] && [ "$currentGitBranch" != 'main' ]; then
+#    git rebase develop
+#  fi
+#fi
 
-if [ 'no-api' != "$2" ]; then
-  pidof postman
-  postmanProcessIds=$!
-  if [ ! "$postmanProcessIds" ]; then
-  nohup postman >/dev/null 2>&1 &
-  fi
-fi
+#if [ 'no-api' != "$2" ]; then
+#  pidof postman
+#  postmanProcessIds=$!
+#  if [ ! "$postmanProcessIds" ]; then
+#  nohup postman >/dev/null 2>&1 &
+#  fi
+#fi
 
 nohup phpstorm ~/projects/"$projectName" >/dev/null 2>&1 &
 
 #@todo check for docker errors
-docker-compose up -d
+docker compose up -d
 cd "$PROJECTS/$projectName" || exit
 echo "$projectName is up and running!"
 
-google-chrome "local.$projectName.com" >/dev/null 2>&1 &
+#google-chrome "local.$projectName.com" >/dev/null 2>&1 &
 
 $SHELL

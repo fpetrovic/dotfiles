@@ -1,4 +1,4 @@
 "engineStrict": true,
 "engines": {
-  "node": "14.18.3"
+  "node": "v18.7.0"
 }

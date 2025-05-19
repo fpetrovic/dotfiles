@@ -129,5 +129,8 @@ else
   fail "error installing dependencies"
 fi
 
+#consider some other place to put it
+nvm alias default node 
+
 echo ''
 success '  All installed!'

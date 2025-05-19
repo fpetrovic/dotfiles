@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Start in the current directory
+dir=$(pwd)
+
+# Build a string of parameters that are set
+params=""
+for param in "$1" "$2" "$3" "$4" "$5" "$6"; do
+    if [ -n "$param" ]; then
+        params="$params \"$param\""
+    fi
+done
+
+# While we're not at the root directory and the directory is not "projects"
+while [[ "$dir" != "/" ]]; do
+    # If a Makefile exists in this directory
+    if [[ -f "$dir/Makefile" ]]; then
+        # Run make in this directory
+        eval "make -C \"$dir\" $params"
+        exit $?
+    fi
+
+    # Go up to the parent directory
+    dir=$(dirname "$dir")
+done
+
+echo "No Makefile found in this directory or any parent directory"
+exit 1
